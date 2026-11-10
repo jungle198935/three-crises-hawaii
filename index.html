@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Three Crises — Crime, Punishment &amp; Homelessness in Hawaiʻi</title>
+<meta name="description" content="An evidence-based portrait of crime, incarceration and homelessness in Hawaiʻi, built entirely from official state and federal datasets.">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2310222a'/%3E%3Cpath d='M6 22c4-1 5-9 10-9s6 8 10 9' stroke='%23b8451f' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  /* page-specific */
+  .arch { display:grid; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:6px; overflow:hidden; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
+  .arch-cell { background:#fffdf8; padding:1.25rem 1.3rem; }
+  .arch-cell .k { font-family:var(--serif); font-size:2rem; font-weight:600; line-height:1; letter-spacing:-.02em; }
+  .arch-cell .k.o { color:var(--ocean); } .arch-cell .k.c { color:var(--coral); } .arch-cell .k.g { color:var(--gold); }
+  .arch-cell .l { font-size:.78rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-top:.55rem; }
+  .arch-cell p { font-size:.85rem; margin:.5rem 0 0; color:var(--ink-2); }
+  .scrub { display:flex; align-items:center; gap:.9rem; margin-top:1rem; flex-wrap:wrap; }
+  .scrub input[type=range] { flex:1; min-width:180px; accent-color:var(--ocean); }
+  .scrub-out { font-variant-numeric:tabular-nums; font-weight:700; font-size:.9rem; min-width:8.5rem; }
+  .two-col { display:grid; gap:clamp(1.2rem,3vw,2.4rem); grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); align-items:start; }
+  .sticky-note { position:sticky; top:78px; }
+  @media (max-width:900px){ .sticky-note{ position:static; } }
+  .kv { display:flex; justify-content:space-between; gap:1rem; padding:.5rem 0; border-bottom:1px dotted var(--line); font-size:.88rem; }
+  .kv:last-child { border-bottom:none; }
+  .kv .v { font-weight:700; font-variant-numeric:tabular-nums; }
+</style>
+</head>
+<body>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="6" fill="#10222a"/>
+        <path d="M6 22c4-1 5-9 10-9s6 8 10 9" stroke="#b8451f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span>Three Crises</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#homeless">Homelessness</a>
+      <a href="#crime">Crime</a>
+      <a href="#prison">Incarceration</a>
+      <a href="#connect">Connections</a>
+      <a href="#explore">Explore</a>
+      <a href="#blindspots">Blind spots</a>
+      <a href="#data">Data</a>
+      <a href="#sources">Sources</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <div class="wrap">
+    <p class="eyebrow">Hawaiʻi · 1975–2025 · official public data</p>
+    <h1>Three crises,<br>one small state.</h1>
+    <div class="hero-rule"></div>
+    <p class="lede">
+      Hawaiʻi locks up fewer people than it did twenty years ago, and reported crime has
+      fallen for four decades. Yet homelessness has climbed, and roughly
+      <strong id="n-outofstate">865</strong> people from Hawaiʻi are still held
+      <strong>2,600 miles away</strong> on the continental United States.
+      Something in the relationship between these three numbers does not add up — and that
+      is the point of this page.
+    </p>
+    <p class="lede" style="max-width:56ch">
+      Every figure below comes from a published government dataset. Nothing is modelled,
+      extrapolated, or guessed. Where the data cannot answer a question, this page says so.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat a">
+        <span class="stat-num" id="stat-hom">11,637</span>
+        <span class="stat-lab">People homeless, 2024</span>
+        <span class="stat-note">Point-in-Time count, up <span id="n-homeless-vs07">+92%</span> since 2007</span>
+      </div>
+      <div class="stat c">
+        <span class="stat-num">−<span id="n-crime-drop">52%</span></span>
+        <span class="stat-lab">Crime rate since 1975</span>
+        <span class="stat-note">Index offenses per 100,000 residents</span>
+      </div>
+      <div class="stat b">
+        <span class="stat-num">−<span id="n-prison-drop">38%</span></span>
+        <span class="stat-lab">Prison population since 2005</span>
+        <span class="stat-note">6,092 at peak → 3,779 in FY2025</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num" id="n-outofstate-pct">23%</span>
+        <span class="stat-lab">Held out of state</span>
+        <span class="stat-note"><span id="n-outofstate2">865</span> people, FY2025</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== OVERVIEW ===================== -->
+<section class="section" id="overview">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The shape of the problem</p>
+      <h2>Three measurements, three different stories</h2>
+      <p class="lede">
+        The intuition is that crime, imprisonment and homelessness are one problem wearing
+        three masks — more crime means more prisoners, and more prisoners means more people
+        released onto the street. Hawaiʻi's own data lets us test that intuition. It only
+        partly holds.
+      </p>
+    </div>
+
+    <div class="card reveal" style="margin-bottom:1.4rem">
+      <div class="card-head">
+        <h3>All three, indexed to their earliest shared year</h3>
+      </div>
+      <p class="card-sub">
+        Each line is set to 100 at its first available year so the <em>shape</em> of change is
+        comparable. The dashed line is the crime rate; the others are raw counts.
+        Hover for exact values.
+      </p>
+      <div id="chart-hero"></div>
+      <div class="callout info" style="margin-bottom:0">
+        <span class="cal-t">Read this chart carefully</span>
+        <p>
+          Indexing makes shapes comparable but <strong>not levels</strong>. A 100-point move on the
+          crime line is 2,900 offenses per 100,000 people; a 100-point move on the prison line is
+          about 4,600 people. The three series also start in different years — the merged axis
+          here spans 1997–2025, so the crime line (available 1975–2021) is truncated.
+        </p>
+      </div>
+    </div>
+
+    <div class="arch reveal">
+      <div class="arch-cell">
+        <div class="k c" id="arch-hom">11,637</div>
+        <div class="l">Homeless, 2024</div>
+        <p>HUD Point-in-Time count. Includes <strong>4,042 unsheltered</strong> people — sleeping outdoors, in vehicles, or in places unfit for habitation.</p>
+      </div>
+      <div class="arch-cell">
+        <div class="k g">2,869</div>
+        <div class="l">Index crimes / 100k, 2021</div>
+        <p>The last year of the state's Summary Reporting System series. From 2021 onward Hawaiʻi reports through NIBRS, which is <em>not</em> directly comparable.</p>
+      </div>
+      <div class="arch-cell">
+        <div class="k o">3,779</div>
+        <div class="l">In prison, FY2025</div>
+        <p>Total assigned population under correctional jurisdiction, including <strong>865 held in contracted facilities on the mainland</strong>.</p>
+      </div>
+      <div class="arch-cell">
+        <div class="k">980</div>
+        <div class="l">People on parole, FY2025</div>
+        <p>The reentry population — the group most directly exposed to the housing crisis on release.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HOMELESSNESS ===================== -->
+<section class="section" id="homeless">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Pillar one</p>
+      <h2>Homelessness</h2>
+      <p class="lede">
+        Once a year, in January, volunteers across the islands count everyone sleeping in
+        shelters and on the street. It is an imperfect census — but it is the same imperfect
+        census every year, which makes the <em>trend</em> meaningful even when the level is not.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head">
+        <h3>People counted homeless in Hawaiʻi, 2007–2025</h3>
+      </div>
+      <p class="card-sub">HUD Point-in-Time counts, statewide. Toggle series in the legend.</p>
+      <div id="chart-homeless"></div>
+      <div class="callout warn">
+        <span class="cal-t">Two years are not comparable</span>
+        <p>
+          <strong>2021</strong> and <strong>2025</strong> were <em>sheltered-only</em> counts — the
+          unsheltered street count was not conducted, so those totals measure a different population
+          than the other years. They are shaded on the chart and shown as a break in the line rather
+          than a dip.
+        </p>
+      </div>
+      <div class="callout">
+        <span class="cal-t">The 2024 jump needs caution</span>
+        <p>
+          The count rose from <strong>6,223</strong> in 2023 to <strong>11,637</strong> in 2024 — a
+          single-year increase of 87%. HUD's CoC-level file shows the increase concentrated almost
+          entirely in the <strong>Hawaiʻi Balance of State</strong> CoC (2,195 → 7,140), which points
+          to a change in how that region counted rather than a one-year doubling of homelessness.
+          The number is published and real; the <em>interpretation</em> is not settled.
+        </p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:1.4rem">
+      <div class="card reveal">
+        <div class="card-head"><h3>Who is counted</h3></div>
+        <p class="card-sub">Latest full count (2024), selected subpopulations.</p>
+        <div id="bars-homeless-comp"></div>
+        <p class="small muted" style="margin-top:1rem;margin-bottom:0">
+          Subpopulations overlap: a chronically homeless Native Hawaiian veteran is counted in
+          three categories. These are not slices of a pie.
+        </p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-head"><h3>Chronic, Native Hawaiian &amp; veteran homelessness</h3></div>
+        <p class="card-sub">Three groups with distinct policy handles.</p>
+        <div id="chart-homeless-sub"></div>
+      </div>
+    </div>
+
+    <div class="callout info reveal">
+      <span class="cal-t">Update · the 2026 count, released after this data was compiled</span>
+      <p>
+        Oʻahu's January 2026 Point-in-Time count found <strong>more than 4,500</strong> people
+        homeless — roughly flat overall, but a 20% <em>fall</em> in unsheltered people and a 35%
+        <em>rise</em> in sheltered people since 2024. The composition changed sharply:
+        homeless children rose <strong>43%</strong> since 2022, and people aged 60+ (19% of the
+        total) rose <strong>45%</strong>.
+      </p>
+      <p style="margin-bottom:0">
+        This supports the caution in the chart above: part of the 2023→2024 statewide jump was a
+        counting and shelter-capacity effect, not a sudden doubling of people on the street. It also
+        shows what the aggregate hides — the crisis is ageing, and it is increasingly families.
+        <a href="https://www.civilbeat.org/2026/05/homelessness-on-oahu-pretty-big-change-in-sheltered-count/" target="_blank" rel="noopener">Source: Civil Beat, May 2026 ↗</a>
+      </p>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head"><h3>The full series</h3></div>
+      <p class="card-sub">Every published Hawaiʻi Point-in-Time figure, 2007–2025.</p>
+      <div class="table-scroll" style="max-height:420px">
+        <table>
+          <caption>Statewide counts. “Sheltered only” marks years the street count was not conducted.</caption>
+          <thead>
+            <tr><th>Year</th><th class="num">Total</th><th class="num">Sheltered</th><th class="num">Unsheltered</th><th class="num">Native Hawaiian / PI</th><th class="num">Chronic</th></tr>
+          </thead>
+          <tbody id="tbody-homeless"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CRIME ===================== -->
+<section class="section" id="crime">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Pillar two</p>
+      <h2>Crime</h2>
+      <p class="lede">
+        Reported crime in Hawaiʻi has fallen substantially since the 1970s. That is the
+        clearest long-run trend in this entire collection of data — and it is the one most
+        often missing from public debate.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><h3>Index crime rate per 100,000 residents, 1975–2021</h3></div>
+      <p class="card-sub">
+        A <strong>stacked decomposition</strong>: the two bands sum to the total index crime rate
+        (the dark outline). Property crime is the larger band, violent crime the thinner one on top —
+        shown together so neither can hide behind the other's scale.
+      </p>
+      <div id="chart-crime"></div>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head"><h3>Violent crime, shown on its own scale</h3></div>
+      <p class="card-sub">Per 100,000 residents. Plotting this against total crime flattens it into a straight line at the bottom — so it gets its own axis.</p>
+      <div id="chart-crime-violent"></div>
+      <div class="callout info" style="margin-bottom:0">
+        <span class="cal-t">The counter-intuitive part</span>
+        <p>
+          Violent crime has <strong>not</strong> fallen the way property crime has. The violent
+          crime rate was <strong>218</strong> per 100,000 in <strong>1975</strong> and
+          <strong>267</strong> in <strong>2021</strong> — a rise of about <strong>22%</strong>,
+          while the overall index fell 52%. “Crime is down” is true of theft; it is not true of violence.
+        </p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-top:1.4rem">
+      <div class="card reveal">
+        <div class="card-head"><h3>By county, as rates</h3></div>
+        <p class="card-sub">Index offenses per 100,000 residents, so the four counties are directly comparable despite Honolulu holding two-thirds of the state's population.</p>
+        <div id="chart-crime-county"></div>
+      </div>
+      <div class="card reveal">
+        <div class="card-head"><h3>What crime actually consists of</h3></div>
+        <p class="card-sub">Index offenses by type, 2021 — the last year of this series.</p>
+        <div id="chart-crime-anatomy"></div>
+        <div class="callout" style="margin-bottom:0">
+          <span class="cal-t">Proportion matters</span>
+          <p>
+            Property crime outnumbers violent crime roughly <strong>10 to 1</strong>. Murder is
+            vanishingly rare — about <strong>1.9 per 100,000</strong>. Policies aimed at “crime”
+            in aggregate are mostly policies aimed at theft.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head">
+        <h3>Every offense, on its own axis</h3>
+        <div class="seg" role="group" aria-label="Measure">
+          <button type="button" id="seg-rate" aria-pressed="true">Rate per 100k</button>
+          <button type="button" id="seg-count" aria-pressed="false">Raw count</button>
+        </div>
+      </div>
+      <p class="card-sub">
+        Eight categories over 46 years. Each panel has its <strong>own vertical scale</strong>, because
+        larceny runs about <strong>20,000</strong> a year and murder about <strong>30</strong> — on a
+        shared axis the small categories would be a flat line at zero. Compare the <em>shape</em> of each
+        panel, and read the % change next to each title. Values shown are for 2021.
+      </p>
+      <div class="sm-grid" id="sm-grid"></div>
+      <div class="callout" style="margin-bottom:0;margin-top:1.2rem">
+        <span class="cal-t">What the individual categories show</span>
+        <p>
+          The headline “crime is down 52%” averages three completely different stories.
+          <em>The figures below are per-capita, 1975→2021.</em>
+        </p>
+        <p style="margin-bottom:.55rem">
+          <strong>Falling sharply:</strong> burglary <strong>−82%</strong>, murder <strong>−76%</strong>,
+          robbery <strong>−51%</strong>, larceny-theft <strong>−47%</strong>.
+          <strong>Rising sharply:</strong> aggravated assault <strong>+163%</strong> and rape
+          <strong>+38%</strong> — though the national rape definition changed in 2013, so treat that
+          series cautiously. Arson begins only in 1980 (−49% since then).
+        </p>
+        <p style="margin-bottom:0">
+          <strong>Watch the units toggle.</strong> Switch to raw counts and several verdicts flip:
+          motor vehicle theft <em>falls 17% per capita but rises 39% in raw numbers</em>, because the
+          resident population grew 67% over the same period. Per-capita is the fairer comparison;
+          raw counts are what a police department actually handles.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn reveal" style="margin-top:1.4rem">
+      <span class="cal-t">Where this series ends — and why it matters</span>
+      <p>
+        On <strong>1 January 2014</strong> Hawaiʻi began transitioning to the FBI's
+        <strong>National Incident-Based Reporting System (NIBRS)</strong>, which counts
+        <em>incidents</em> and up to ten offenses per incident rather than one summary offense.
+        The state completed the transition in 2021 and retired this series. Post-2021 figures
+        now live only in the <a href="https://crimestats.hawaii.gov" target="_blank" rel="noopener">Hawaiʻi Crime Dashboard</a>,
+        which is a Power BI view with <strong>no bulk download and no API</strong>. Any
+        2021-vs-2022 comparison on this page would be invalid, so none is offered.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== INCARCERATION ===================== -->
+<section class="section" id="prison">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Pillar three</p>
+      <h2>Incarceration</h2>
+      <p class="lede">
+        Hawaiʻi is unusual among US states: it runs a <strong>unified</strong> prison and jail
+        system, so a single department holds people awaiting trial and people serving
+        multi-decade sentences. It also exports a substantial share of its prisoners.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><h3>Total assigned population vs. people housed out of state</h3></div>
+      <p class="card-sub">Fiscal years ending 30 June. “Assigned” counts everyone under correctional jurisdiction.</p>
+      <div id="chart-prison"></div>
+      <div class="callout">
+        <span class="cal-t">The out-of-state question</span>
+        <p>
+          At its <strong>2009 peak</strong>, Hawaiʻi housed <strong id="n-outofstate-peak">2,077</strong>
+          people in contracted mainland facilities — <strong>34.6%</strong> of its entire prison
+          population, the highest share of any US state at the time. That share is now
+          <strong id="n-outofstate-pct2">23%</strong>. Contract beds have shrunk, but the practice
+          has not ended: <strong id="n-outofstate3">865</strong> people remain in FY2025.
+        </p>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head"><h3>What the in-state population is made of</h3></div>
+      <p class="card-sub">Annual average head count in the state's eight adult facilities, 2010–2025.</p>
+      <div id="chart-prison-composition"></div>
+      <div class="callout info" style="margin-bottom:0">
+        <span class="cal-t">The pretrial finding</span>
+        <p>
+          In FY2025 the largest single category in Hawaiʻi's facilities is
+          <strong>people not yet sentenced</strong> — 1,041 of 2,868, or <strong>36%</strong>.
+          Jails are, more than anything else, places where legally innocent people wait.
+        </p>
+      </div>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head"><h3>Full corrections series</h3></div>
+      <p class="card-sub">Total assigned population and mainland-contracted share, FY1997–FY2025.</p>
+      <div class="table-scroll" style="max-height:420px">
+        <table>
+          <caption>Source: DBEDT State of Hawaiʻi Data Book 2025, Table 4.22 (underlying data: Department of Public Safety / DCR).</caption>
+          <thead><tr><th>Fiscal year</th><th class="num">Total assigned</th><th class="num">At contracted mainland facilities</th><th class="num">Out-of-state share</th></tr></thead>
+          <tbody id="tbody-prison"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONNECTIONS ===================== -->
+<section class="section" id="connect">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">The hard part</p>
+      <h2>How the three problems connect</h2>
+      <p class="lede">
+        This is where most analyses overreach. The data can show that these problems move
+        together and overlap in the same populations. It cannot, on its own, show that one
+        causes another. Here is what the evidence does and does not support.
+      </p>
+    </div>
+
+    <div class="card reveal">
+      <div class="card-head"><h3>Three measures, three axes, same years</h3></div>
+      <p class="card-sub">
+        Each panel is expressed <strong>per 100,000 residents</strong> and given its own vertical
+        scale, so no series is flattened by another's magnitude. Read the <em>direction</em> of each
+        line, not the height. Window is 2010–2021, the last year the source publishes a population
+        denominator.
+      </p>
+      <div class="grid-3" style="gap:1.3rem">
+        <div>
+          <p class="eyebrow" style="color:var(--coral);margin-bottom:.15rem">Homelessness</p>
+          <p class="small muted" style="margin:0 0 .3rem">people per 100k</p>
+          <div id="chart-mm-homeless"></div>
+        </div>
+        <div>
+          <p class="eyebrow" style="color:var(--gold);margin-bottom:.15rem">Crime</p>
+          <p class="small muted" style="margin:0 0 .3rem">index offenses per 100k</p>
+          <div id="chart-mm-crime"></div>
+        </div>
+        <div>
+          <p class="eyebrow" style="color:var(--ocean);margin-bottom:.15rem">Incarceration</p>
+          <p class="small muted" style="margin:0 0 .3rem">inmates per 100k</p>
+          <div id="chart-mm-prison"></div>
+        </div>
+      </div>
+      <div class="callout" style="margin-bottom:0">
+        <span class="cal-t">What the common denominator reveals</span>
+        <p>
+          Over this decade the crime rate falls <strong>26%</strong> and the incarceration rate
+          falls <strong>8%</strong>. The homeless rate <strong>rises 7%</strong> — and it peaked in
+          2016 at <strong>555 per 100,000</strong>, exactly when crime was already well down from its
+          2010 level. There is no common trajectory here. That divergence is the strongest evidence
+          on this page that homelessness is not simply a downstream effect of crime.
+        </p>
+      </div>
+    </div>
+
+    <ul class="insights reveal" style="margin-top:1.4rem">
+      <li class="insight">
+        <span class="insight-n">01</span>
+        <div>
+          <h4>Crime and imprisonment moved together — then decoupled</h4>
+          <p>
+            Both rose through the 1970s–90s and both fell sharply after about 2007. But the
+            prison population fell <strong>before</strong> the steepest crime declines in some
+            years and <strong>after</strong> them in others. A single shared driver — or policy
+            choices like justice reinvestment — fits this pattern better than either one causing
+            the other.
+          </p>
+        </div>
+      </li>
+      <li class="insight">
+        <span class="insight-n">02</span>
+        <div>
+          <h4>Homelessness did not follow crime down</h4>
+          <p>
+            This is the most important negative finding on the page. If crime were the engine of
+            homelessness, the 2010s should have produced a steady decline. Instead the count
+            rose from <strong>5,834 (2010)</strong> to <strong>7,921 (2016)</strong> — a 36% increase —
+            while the crime rate fell <strong>11%</strong> over the same six years. Both cannot be
+            driven by the same force. Housing cost, not crime, is the better-supported driver.
+          </p>
+          <p style="margin:.55rem 0 0;font-size:.86rem;color:var(--ink-soft)">
+            <strong>Caveat added after reviewing the reporting:</strong> this holds for
+            <em>index</em> crime only. Enforcement against homeless people, and methamphetamine,
+            connect the two systems in ways the index series cannot record —
+            see <a href="#blindspots">The connection the index numbers miss</a>.
+          </p>
+        </div>
+      </li>
+      <li class="insight">
+        <span class="insight-n">03</span>
+        <div>
+          <h4>The real link is at the point of release</h4>
+          <p>
+            In FY2025 Hawaiʻi granted <strong>473</strong> paroles, released
+            <strong>416</strong> people on parole, and had <strong>980</strong> people under parole
+            supervision — plus everyone who left custody by maxing out their sentence. A person
+            leaving custody with no address is at high risk of both re-offending and becoming
+            homeless. This is the best-documented mechanism connecting the prison and homeless
+            systems, and it is a <em>reentry</em> problem, not a crime-rate problem.
+          </p>
+        </div>
+      </li>
+      <li class="insight">
+        <span class="insight-n">04</span>
+        <div>
+          <h4>Punishment falls hardest on Native Hawaiians</h4>
+          <p>
+            The clearest official figure is from the Bureau of Justice Statistics: on 31 December 2023,
+            <strong>1,692 of the 3,942 people</strong> in Hawaiʻi's correctional system were
+            <strong>Native Hawaiian or Pacific Islander</strong> — about <strong>43%</strong>.
+            In the 2020 Census that same group was about <strong>27%</strong> of the state's
+            population (alone or in combination). The overrepresentation repeats in the homeless
+            count, where Native Hawaiians and Pacific Islanders were <strong>2,545</strong> of
+            <strong>6,828</strong> people in 2025 — about <strong>37%</strong>.
+          </p>
+          <p style="margin:.55rem 0 0;font-size:.86rem;color:var(--ink-soft)">
+            <strong>That 37% is an undercount.</strong> It uses HUD's single-race category. On Oʻahu
+            in 2026 the share of people counted homeless who were Hawaiian or Pacific Islander rose
+            to <strong>63%</strong> once multiracial people were included — “race alone” reporting
+            systematically understates this disparity.
+          </p>
+        </div>
+      </li>
+      <li class="insight">
+        <span class="insight-n">05</span>
+        <div>
+          <h4>Geography is a policy, not a fact</h4>
+          <p>
+            Holding people 2,600 miles from their families makes successful reentry harder and
+            reentry is the mechanism that links prison to homelessness. The out-of-state contract
+            is therefore not a neutral cost-saving measure — it feeds directly into the third
+            crisis.
+          </p>
+        </div>
+      </li>
+    </ul>
+
+    <div class="callout warn reveal" style="margin-top:1.4rem">
+      <span class="cal-t">What this page will not claim</span>
+      <p>
+        No correlation coefficient is offered between these series. The measurement windows do
+        not align (crime ends 2021, homelessness is a January snapshot, prison is a fiscal-year
+        average), the counts use incompatible denominators, and three data points do not identify
+        a causal direction. Anyone presenting a single tidy correlation across these three
+        measures is almost certainly overfitting.
+        <br><br>
+        But absence of a correlation is <em>not</em> evidence of absence of a connection. The
+        quantitative sections above cannot see quality-of-life enforcement, addiction, or
+        institutional capacity — which is precisely why
+        <a href="#blindspots">the reporting section</a> exists, and why it is labelled as
+        reporting rather than data.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BLIND SPOTS ===================== -->
+<section class="section" id="blindspots">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">What the data cannot see</p>
+      <h2>The connection the index numbers miss</h2>
+      <p class="lede">
+        Everything above says crime rates and homelessness <em>do not move together</em>. That is a
+        statement about <strong>index crime</strong> — the eight legacy categories the FBI measures.
+        Reporting from Honolulu Civil Beat shows the two are connected anyway, through two channels
+        the aggregate series structurally cannot capture: <strong>enforcement of survival behaviour</strong>,
+        and <strong>methamphetamine</strong>.
+      </p>
+    </div>
+
+    <div class="grid-2x2 reveal">
+      <div class="card">
+        <div class="card-head"><h3>1. The state polices survival, not just crime</h3></div>
+        <p class="card-sub">And index crime does not count it.</p>
+        <p>
+          In August 2026 the Honolulu City Council considered <strong>Bill 53</strong>, which would
+          fine anyone possessing a shopping cart outside a store up to <strong>$2,000</strong> or
+          jail them for <strong>30 days</strong>. A man interviewed in Iwilei said his cart
+          “helps keep me upright” — it was functioning as a walker.
+        </p>
+        <p style="margin-bottom:0">
+          Charges like this — shopping carts, sit-lie, trespass, obstructing a sidewalk — are
+          <strong>not index offences</strong>. They never appear in the crime chart above. A 52% fall
+          in index crime is entirely compatible with rising enforcement against homeless people,
+          because the two measure different things.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>2. Methamphetamine is the connective tissue</h3></div>
+        <p class="card-sub">One drug links property crime, arrest, prison and homelessness.</p>
+        <p>
+          Hawaiʻi was the first place in the U.S. where smoked crystal meth took hold, and it is now
+          the <strong>only state where meth kills more people than opioids</strong>. Civil Beat
+          obtained autopsies for <strong>100 meth-related deaths on Oʻahu in ten months</strong>
+          across 2024–25.
+        </p>
+        <p style="margin-bottom:0">
+          This is the mechanism a correlation coefficient would miss entirely: the same addiction
+          drives the burglary and car theft in the offence chart, the arrest, the prison bed, and the
+          loss of housing — in that order, for the same people, repeatedly.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>3. The delivery system failed, not just the funding</h3></div>
+        <p class="card-sub">Which is why money has not moved the number.</p>
+        <p>
+          The state auditor found <strong>$13.7 million</strong> in improper or unauthorised spending
+          in the governor's flagship kauhale (tiny-home) programme. In one case, <strong>20 tiny
+          homes that cost taxpayers $716,000 were sold to a Kalihi church for $1</strong>, with
+          support services dropped, while more than 30 elderly residents kept paying rent.
+        </p>
+        <p style="margin-bottom:0">
+          Honolulu's own auditor found the city's homeless services programme
+          <strong>“too disorganized to assess.”</strong> A rising homeless count is not proof that
+          policy failed for lack of money; it is partly proof that the money was not delivered.
+        </p>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>4. The prison got smaller and more dangerous</h3></div>
+        <p class="card-sub">A falling headcount is not a success measure.</p>
+        <p>
+          Confirmed or suspected suicides accounted for <strong>eight of the fifteen deaths</strong>
+          at Hālawa Correctional Facility over two years, and about
+          <strong>one third of all deaths</strong> in the statewide correctional system in 2024–25.
+          Nationally, suicides are about <strong>8%</strong> of prison deaths.
+        </p>
+        <p style="margin-bottom:0">
+          The population chart above shows a 38% decline since 2005 — a genuinely good trend. It says
+          nothing about the conditions inside, which is where Civil Beat's reporting finds the crisis
+          has moved.
+        </p>
+      </div>
+    </div>
+
+    <div class="callout warn reveal" style="margin-top:1.4rem">
+      <span class="cal-t">How this changes the argument above</span>
+      <p>
+        The earlier finding still holds: <strong>crime rates do not drive homelessness</strong>, and
+        the reentry pathway is the best-evidenced link in the administrative data. But “decoupled”
+        was too strong a word. The correct statement is narrower:
+      </p>
+      <p style="margin-bottom:.6rem">
+        <em>Index crime rates and homelessness have diverged. The criminal justice system and
+        homelessness have not. They are connected through the enforcement of quality-of-life
+        offences and through methamphetamine — neither of which the index series measures.</em>
+      </p>
+      <p style="margin-bottom:0">
+        A reader who took only the charts would conclude these are three separate problems. A reader
+        of the reporting would conclude they are one population cycling through three systems.
+        Both observations are true, and a site that showed only the first would be misleading.
+      </p>
+    </div>
+
+    <div class="card reveal" style="margin-top:1.4rem">
+      <div class="card-head"><h3>Reporting this section relies on</h3></div>
+      <p class="card-sub">All from Honolulu Civil Beat, a nonprofit newsroom in Honolulu. These are secondary reporting, not primary statistics — they are cited because they describe mechanisms no dataset records.</p>
+      <ul style="margin:0;padding-left:1.1rem;font-size:.88rem;line-height:1.9">
+        <li><a href="https://www.civilbeat.org/2026/08/honolulu-considers-fining-jailing-homeless-over-shopping-carts/" target="_blank" rel="noopener">Honolulu Considers Fining, Jailing Homeless Over Shopping Carts</a> <span class="muted">— Aug 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/08/100-autopsies-meth-deaths-spiking-40-years-after-ice-seized-hawaii/" target="_blank" rel="noopener">100 Autopsies: Meth Deaths Spiking 40 Years After Ice Seized Hawaiʻi</a> <span class="muted">— Aug 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/10/state-errors-led-to-13m-in-wasted-homeless-funds-audit-says/" target="_blank" rel="noopener">State Errors Led To $13M+ In Improper Homeless Spending, Audit Says</a> <span class="muted">— Oct 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/11/taxpayers-spent-700k-on-these-tiny-homes-hawaii-ditched-them-for-1/" target="_blank" rel="noopener">Taxpayers Spent $700K On These Tiny Homes. Hawaiʻi Ditched Them For $1</a> <span class="muted">— Nov 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/02/string-of-devastating-suicides-in-hawaii-prisons-continues/" target="_blank" rel="noopener">String Of ‘Devastating’ Suicides In Hawaiʻi Prisons Continues</a> <span class="muted">— Feb 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/05/homelessness-on-oahu-pretty-big-change-in-sheltered-count/" target="_blank" rel="noopener">Homelessness On Oʻahu: ‘Pretty Big Change’ In Sheltered Count</a> <span class="muted">— May 2026</span></li>
+        <li><a href="https://www.civilbeat.org/2026/10/plans-to-replace-hawaiis-largest-jail-are-coupled-with-treatment/" target="_blank" rel="noopener">Plans For New Jail To Include Community-Based Treatment</a> <span class="muted">— Oct 2026</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXPLORER ===================== -->
+<section class="section" id="explore">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">All the data, sortable</p>
+      <h2>Explore every number</h2>
+      <p class="lede">
+        Every observation used on this page — <strong id="ex-total">5,717</strong> of them across
+        <strong id="ex-metrics">32</strong> measures and <strong id="ex-geos">5</strong> geographies —
+        in one sortable table. Each row carries a link to the dataset it came from. Filter it, sort it
+        by any column, and download exactly what you filtered.
+      </p>
+    </div>
+
+    <div class="explorer reveal">
+      <div class="ex-bar">
+        <div class="ex-search">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <input type="search" id="ex-q" placeholder="Search metric, geography…" aria-label="Search the data">
+        </div>
+        <select class="ex-select" id="ex-metric" aria-label="Filter by measure">
+          <option value="">All measures</option>
+        </select>
+        <select class="ex-select" id="ex-geo" aria-label="Filter by geography">
+          <option value="">All geographies</option>
+        </select>
+        <select class="ex-select" id="ex-year" aria-label="Filter by year">
+          <option value="">All years</option>
+        </select>
+        <button class="ex-btn" id="ex-reset" type="button">Reset</button>
+        <button class="ex-btn primary" id="ex-download" type="button">Download CSV</button>
+      </div>
+
+      <div class="ex-chips" id="ex-chips" role="group" aria-label="Filter by dataset"></div>
+
+      <div class="ex-meta">
+        <span>Showing <b id="ex-shown">0</b> of <b id="ex-count">0</b> rows</span>
+        <span class="spacer"></span>
+        <span id="ex-range"></span>
+      </div>
+
+      <div class="ex-tablewrap">
+        <table class="ex-table">
+          <thead>
+            <tr>
+              <th data-sort="d" scope="col">Dataset <span class="arrow">▲</span></th>
+              <th data-sort="m" scope="col">Measure <span class="arrow">▲</span></th>
+              <th data-sort="g" scope="col" class="ex-hide-sm">Geography <span class="arrow">▲</span></th>
+              <th data-sort="y" scope="col">Year <span class="arrow">▲</span></th>
+              <th data-sort="v" scope="col" class="num">Value <span class="arrow">▲</span></th>
+              <th data-sort="u" scope="col" class="ex-hide-sm">Unit <span class="arrow">▲</span></th>
+              <th scope="col" class="ex-hide-sm">Source</th>
+            </tr>
+          </thead>
+          <tbody id="ex-body"></tbody>
+        </table>
+      </div>
+
+      <div class="ex-page">
+        <button class="ex-btn" id="ex-prev" type="button">← Prev</button>
+        <span>Page <b id="ex-page">1</b> of <b id="ex-pages">1</b></span>
+        <button class="ex-btn" id="ex-next" type="button">Next →</button>
+        <span class="spacer"></span>
+        <span id="ex-sortlabel"></span>
+      </div>
+    </div>
+
+    <div class="callout info reveal" style="margin-top:1.4rem">
+      <span class="cal-t">Reading the table honestly</span>
+      <p>
+        Values are <strong>not interchangeable</strong> across rows. “Count” and “per 100k” are
+        different units; the crime series ends in 2021, homelessness is a January snapshot, and
+        prison figures are fiscal-year averages. Sorting by the value column mixes units — it is a
+        finding aid, not a ranking. Rows marked <em>sheltered-only count</em> measure a different
+        population and should not be compared with other homelessness years.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DATA / ACCESS ===================== -->
+<section class="section" id="data">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Method &amp; access</p>
+      <h2>Where the numbers come from — and how hard they are to get</h2>
+      <p class="lede">
+        An honest account of the data landscape is part of the finding. Hawaiʻi publishes a lot
+        of criminal-justice statistics, but much of it is locked in PDFs and dashboards rather
+        than released as data.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="card reveal">
+        <div class="card-head"><h3>Formats in use</h3></div>
+        <div class="kv"><span>Crime (1975–2021)</span><span class="v">XLS ✓</span></div>
+        <div class="kv"><span>Crime (2021→ NIBRS)</span><span class="v">Power BI only ✗</span></div>
+        <div class="kv"><span>Homelessness (PIT)</span><span class="v">XLSB ✓</span></div>
+        <div class="kv"><span>Prison population</span><span class="v">XLSX ✓</span></div>
+        <div class="kv"><span>Recidivism</span><span class="v">PDF (stale) ✗</span></div>
+        <div class="kv"><span>Jail bookings</span><span class="v">PDF ✗</span></div>
+        <div class="kv"><span>County police</span><span class="v">mixed</span></div>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-head"><h3>Known gaps</h3></div>
+        <ul style="margin:0;padding-left:1.1rem;font-size:.9rem;line-height:1.75">
+          <li>The state open-data portal holds <strong>one</strong> crime dataset and effectively <strong>no</strong> corrections datasets.</li>
+          <li>Post-2021 crime data has <strong>no machine-readable release</strong> at all.</li>
+          <li>The latest published recidivism cohort is <strong>FY2016</strong>.</li>
+          <li>Maui County police statistics could not be retrieved; the county site blocks automated access.</li>
+          <li>No state-level victimization survey exists.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout info reveal" style="margin-top:1.4rem">
+      <span class="cal-t">Structural break to keep in mind</span>
+      <p>
+        On <strong>1 January 2024</strong> the Hawaiʻi Department of Public Safety was
+        redesignated as the <strong>Department of Corrections and Rehabilitation</strong>, and
+        its law-enforcement divisions moved to a new <strong>Department of Law Enforcement</strong>.
+        Even the 2025 Data Book still credits the abolished “Department of Public Safety,” which
+        is a useful reminder to check the publisher, not just the table.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SOURCES ===================== -->
+<section class="section" id="sources">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <p class="eyebrow">Provenance</p>
+      <h2>Sources</h2>
+      <p class="lede">Every dataset used on this page, with its publisher, format and latest year.</p>
+    </div>
+
+    <div class="src-grid reveal">
+      <div class="src">
+        <div class="src-pub">Hawaiʻi Department of the Attorney General · CPJAD</div>
+        <h4>Crime in Hawaiʻi — Uniform Crime Reports</h4>
+        <p>Statewide and county index offenses and rates, 1975–2021. The full workbook.</p>
+        <span class="tag fmt">XLS</span><span class="tag">1975–2021</span>
+        <a href="https://ag.hawaii.gov/cpja/rs/cih/" target="_blank" rel="noopener">ag.hawaii.gov/cpja/rs/cih</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Hawaiʻi Attorney General</div>
+        <h4>Hawaiʻi Crime Dashboard (NIBRS)</h4>
+        <p>Incident-based crime data from 2021 onward. Published as an embedded Power BI report; no API, no bulk export.</p>
+        <span class="tag">2021→</span><span class="tag">dashboard only</span>
+        <a href="https://crimestats.hawaii.gov" target="_blank" rel="noopener">crimestats.hawaii.gov</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">US Dept. of Housing &amp; Urban Development</div>
+        <h4>Point-in-Time Counts by State / by CoC</h4>
+        <p>Annual homelessness census, 2007–2025, including sheltered status and Native Hawaiian breakdown.</p>
+        <span class="tag fmt">XLSB</span><span class="tag">2007–2025</span>
+        <a href="https://www.huduser.gov/portal/datasets/ahar/2025-ahar-part-1-pit-estimates-of-homelessness-in-the-us.html" target="_blank" rel="noopener">huduser.gov · AHAR Part 1</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">US Bureau of Justice Statistics</div>
+        <h4>Prisoners in 2023 — Statistical Tables</h4>
+        <p>Hawaiʻi jurisdiction population 3,942 at 31 Dec 2023, including 1,692 Native Hawaiian or Pacific Islander. Because Hawaiʻi runs prisons and jails as one system, this count includes both.</p>
+        <span class="tag">CSV/PDF</span><span class="tag">2023</span>
+        <a href="https://bjs.ojp.gov/library/publications/prisoners-2023-statistical-tables" target="_blank" rel="noopener">bjs.ojp.gov · Prisoners 2023</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">DBEDT · Research &amp; Economic Analysis</div>
+        <h4>State of Hawaiʻi Data Book 2025, Section 1</h4>
+        <p>Table 1.31: 2020 Census population by race — Native Hawaiian and Other Pacific Islander, alone or in combination, is 394,102 of 1,455,271 residents (27.1%).</p>
+        <span class="tag fmt">XLSX</span><span class="tag">2020 Census</span>
+        <a href="https://dbedt.hawaii.gov/economic/databook/db2025/" target="_blank" rel="noopener">dbedt.hawaii.gov · Data Book</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">DBEDT · Research &amp; Economic Analysis</div>
+        <h4>State of Hawaiʻi Data Book 2025, Section 4</h4>
+        <p>Tables 4.20 and 4.22: in-facility population, total assigned population and mainland-contracted beds, FY1997–FY2025.</p>
+        <span class="tag fmt">XLSX</span><span class="tag">1997–2025</span>
+        <a href="https://dbedt.hawaii.gov/economic/databook/db2025/" target="_blank" rel="noopener">dbedt.hawaii.gov · Data Book</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Hawaiʻi Dept. of Corrections &amp; Rehabilitation</div>
+        <h4>Annual Reports &amp; §353H-7 Out-of-State Report</h4>
+        <p>Agency annual reports FY2003–FY2025 and the statutory report on out-of-state inmates (938 in Jan 2025 → 799 in Dec 2025).</p>
+        <span class="tag">PDF</span><span class="tag">to FY2025</span>
+        <a href="https://dcr.hawaii.gov/publications/annual-reports/" target="_blank" rel="noopener">dcr.hawaii.gov · Annual Reports</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Interagency Council on Intermediate Sanctions</div>
+        <h4>Hawaiʻi Recidivism Reports</h4>
+        <p>Three-year cohort recidivism studies. The most recent published cohort is FY2016 (published 2021).</p>
+        <span class="tag">PDF</span><span class="tag">latest FY2016</span>
+        <a href="https://icis.hawaii.gov/documents/" target="_blank" rel="noopener">icis.hawaii.gov · Documents</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Office of Hawaiian Affairs</div>
+        <h4>Native Hawaiian Justice Task Force &amp; HCR-85</h4>
+        <p>Stage-by-stage disparity analysis; the canonical source for out-of-state Native Hawaiian overrepresentation.</p>
+        <span class="tag">PDF</span><span class="tag">2010–2018</span>
+        <a href="https://www.oha.org/governance/criminal-justice/" target="_blank" rel="noopener">oha.org · Criminal Justice</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Honolulu Civil Beat · nonprofit newsroom</div>
+        <h4>Reporting on prisons, homelessness and meth</h4>
+        <p>Used in the “Blind spots” section for mechanisms no dataset records: quality-of-life enforcement, methamphetamine deaths, kauhale programme audits, and prison suicides. Secondary reporting, cited as such.</p>
+        <span class="tag">Journalism</span><span class="tag">2026</span>
+        <a href="https://www.civilbeat.org/category/homelessness/" target="_blank" rel="noopener">civilbeat.org · Homelessness</a> ·
+        <a href="https://www.civilbeat.org/category/prisons/" target="_blank" rel="noopener">Prisons</a>
+      </div>
+
+      <div class="src">
+        <div class="src-pub">Hawaiʻi State Data Office</div>
+        <h4>Hawaiʻi Open Data (CKAN)</h4>
+        <p>State open-data portal. Contains exactly one crime dataset and no substantive corrections datasets — a finding in itself.</p>
+        <span class="tag fmt">CSV/XLS</span><span class="tag">varies</span>
+        <a href="https://opendata.hawaii.gov" target="_blank" rel="noopener">opendata.hawaii.gov</a>
+      </div>
+    </div>
+
+    <div class="callout reveal" style="margin-top:1.6rem">
+      <span class="cal-t">Reproduce this</span>
+      <p>
+        All figures are computed directly from the source workbooks at load time; the charts hold
+        no hard-coded values. The four headline counters on this page are derived from the same
+        arrays the charts draw from. Corrections to the source data will therefore show up here
+        without any code change — which is the point.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="foot">
+  <div class="wrap">
+    <p style="font-family:var(--serif);font-size:1.15rem;color:var(--ink);margin-bottom:.6rem">
+      Three Crises — crime, punishment and homelessness in Hawaiʻi
+    </p>
+    <p>
+      An independent, non-partisan compilation of official Hawaiʻi and federal statistics.
+      Not affiliated with any government agency or advocacy organisation. Figures reflect the
+      most recent published releases at the time of compilation; several series have since been
+      discontinued or replaced.
+    </p>
+    <p class="small" style="margin-bottom:0">
+      Built from public data. No trackers, no external requests, no analytics.
+      <span id="build-stamp"></span>
+    </p>
+  </div>
+</footer>
+
+<script src="data/dataset.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  document.getElementById("build-stamp").textContent =
+    "Page rendered " + new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) + ".";
+  // keep hero counters honest by copying the JS-derived values
+  (function () {
+    var h = document.querySelector("#stat-hom");
+    var src = document.querySelector("#arch-hom");
+    if (h && src) h.textContent = src.textContent;
+    var o = document.querySelector("#n-outofstate");
+    var o2 = document.querySelector("#n-outofstate2");
+    if (o && o2) o2.textContent = o.textContent;
+  })();
+</script>
+</body>
+</html>
